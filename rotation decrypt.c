@@ -1,24 +1,37 @@
 #include <stdio.h>
+#include <string.h>
 
-
-
-int main(void)
+int main()
 {
-   
-   
-   
-   //creates a string for the message to be stored in, and an input system for the message.
-   char message[1000];
-   printf("Enter message to incrypt\n");
-   scanf("%s", message);
-   
-   //creates rotation key input.
-   int k; //k = rotation key
-   printf("Enter rotation key\n");
-   scanf("%d\n", &k);
-   
-   
-   printf("%d\n", message[0]);
-   
-   return 0;
- }  
+    int i = 1000;
+    char str1[i];
+    
+    printf("Enter message to be decrypted:");
+    scanf("%[^\n]s", str1);
+    
+    int k;
+    printf("\nEnter rotation of cipher:");
+    scanf("%d", &k);
+    
+    printf("Your message has been decrypted to the following:\n");
+    for(i=0;i<strlen(str1);i++){
+    
+    if(str1[i]>=32 && str1[i]<=64){
+        continue;
+    }
+    else if(str1[i]>=97 && str1[i]<=122){
+        str1[i]= str1[i] - 97;
+        str1[i] = ((str1[i] + 26 - k) % 26);
+        str1[i]= str1[i] + 65;
+        continue;
+    }
+    else
+    str1[i]= str1[i] - 65;
+    str1[i] = ((str1[i] + 26 - k) % 26);
+    str1[i] = str1[i] + 65;
+    continue;
+  
+    }
+   printf("%s", str1);
+    return 0;
+}
