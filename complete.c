@@ -5,6 +5,7 @@ char encryption(char str2[], int k);    //function prototype for rotation cipher
 char decryption(char str1[], int k);    //function prototype for rotation cipher decryption
 char encryptionSub(char str3[], char str4[]);   //function prototype for substitution cipher encryption
 char decryptionSub(char str3[], char str4[]);   //function prototype for substitution cipher decryption
+char decryptionKeyless(char str1[], char str2[], int k); //function for rotation cipher decryption (without key)
 
 int main()
 {
@@ -46,15 +47,15 @@ int main()
         break;
      
      case 5:    //if 2 is selected the rotation decryption (without rotation key) function will be run
-     
-     break;
+        decryptionKeyless(str1, str2, k);
+        break;
      
      case 6:
      
      break;
  }
  int m;
- printf("Would you like to Decrypt/Encrypt again?:\n");
+ printf("\nWould you like to Decrypt/Encrypt again?:\n");
  printf("(1) Yes\n");
  printf("(2) No\n");
  scanf("%d", &m);
@@ -328,8 +329,46 @@ char decryptionSub(char str3[], char str4[]){
 			    str3[i] = str3[i];
 	        }
 			
-		
-	
 	//*prints Encrypted message*//
 	printf("\nYour message has been encrypted to:\n%s\n\n", str3);
+}
+
+//definition of the rotation decryption (without key) function
+char decryptionKeyless(char str1[], char str2[], int k){
+    int i;  //creates a integer to count thorugh string characters and modify them individually
+    
+    //prompts user to enter a message to be decrypted and stores it in str1
+    printf("\nEnter message to be decrypted:\n");
+    scanf(" %[^\n]s", str2);
+    
+    printf("\nYour message is one of the combinitions below:\n");    //tells user that the text below it is the decrypted message
+    
+    for(k=1;k<=25;k++){
+        for(i=0;i<strlen(str2);i++){
+            str1[i] = str2[i];
+        }
+        
+        
+        
+        for(i=0;i<strlen(str2);i++){    //decrypts each character of the string individually then moves to the next
+            
+            if(str1[i]>=32 && str1[i]<=64){     //if the character isn't a letter its ascii value remains unchanged pre encryption
+            continue;
+            }
+            else if(str1[i]>=97 && str1[i]<=122){           //if the character is a lower case the following will happen:
+                str1[i]= str1[i] - 97;                      //each letters ascii value will be reduced so "a" = 0 "z" = 25
+                str1[i] = ((str1[i] + 26 - k) % 26);        //the rotation of the cipher will be subtracted from each new string char assignment and its modulas of 26 will become the new value to account for the rotation wrapping from the end of the alphabet back to the start
+                str1[i]= str1[i] + 65;                      //converts string chars back into letter ascii values + the rotation amount
+                continue;
+            }
+            else
+                str1[i]= str1[i] - 65;                          //if the character is already a capital each letters ascii value will be reduced so "A" = 0 "Z" = 25 
+                str1[i] = ((str1[i] + 26 - k) % 26);            //the rotation of the cipher will be subtracted from each new string char assignment and its modulas of 26 will become the new value to account for the rotation wrapping from the end of the alphabet back to the start
+                str1[i] = str1[i] + 65;                         //converts string chars back into letter ascii values + the rotation amount
+                continue;
+            }
+        
+        printf("rotation of %d: %s\n", k, str1);  //prints decrypted message to screen
+    }
+   return str1[i];
 }
